@@ -1,0 +1,442 @@
+CREATE SCHEMA farmacia_1;
+
+use farmacia_1;
+
+
+CREATE TABLE loja (
+id int not null AUTO_INCREMENT,
+preco_do_produto VARCHAR(45) NULL,
+cadastro_cliente VARCHAR(45) NULL,
+endereco_loja_id int not null,
+funcionario_loja_id int not null,
+PRIMARY KEY (id));
+
+CREATE TABLE cliente (
+id int not null AUTO_INCREMENT,
+loja_id int not null,
+endereco_cliente_id int not null,
+nome VARCHAR(45) null,
+cpf int not null,
+primary key (id));
+
+CREATE TABLE armazem (
+id int not null auto_increment,
+transportadora_id int not null,
+loja_id int not null,
+endereco_armazem_id int not null,
+tamanho_armazem varchar(45) null,
+espaco_vazio varchar(45) null,
+espaco_ocupado varchar(45) null,
+controle_de_medicamento_id int not null,
+primary key(id));
+
+CREATE TABLE funcionario_loja (
+id int not null auto_increment,
+nome varchar(45) null,
+cpf int not null,
+entrada_saida date,
+primary key(id));
+
+CREATE TABLE pedido_online(
+id int not null auto_increment,
+loja_id int not null,
+carrinho_id int not null,
+forma_de_pagamento_id int not null,
+pedidos varchar(45) null,
+endereco_entrega varchar(45) null,
+medicamento varchar(45) null,
+primary key(id));
+
+CREATE TABLE carrinho(
+id int not null auto_increment,
+produtos varchar(45) null,
+primary key(id));
+
+CREATE TABLE pedidos_presenciais(
+id int not null auto_increment,
+loja_id int not null,
+forma_de_pagamento_id int not null,
+medicamentos varchar(45) not null,
+endereco_de_entrega varchar(45) not null,
+primary key(id));
+
+CREATE TABLE forma_de_pagamento(
+id int not null auto_increment,
+forma_de_pagamentocol varchar(45) not null,
+cartao_de_credito varchar(45) not null,
+forma_de_pagamentocol1 varchar(45) not null,
+primary key(id));
+
+CREATE TABLE endereco_loja(
+id int not null auto_increment,
+CEP int not null,
+logradouro varchar(45) not null,
+primary key(id));
+
+CREATE TABLE endereco_cliente(
+id int not null auto_increment,
+logradouro varchar(45) not null,
+CEP int not null,
+primary key(id));
+
+CREATE TABLE endereco_armazem(
+id int not null auto_increment,
+logradouro varchar(45) not null,
+CEP int  not null,
+primary key (id));
+ 
+CREATE TABLE controle_de_medicamento(
+id int not null auto_increment,
+validade varchar(45) not null,
+separaco_estoque varchar(45) not null,
+funcionario_controle_id int not null,
+primary key(id));
+
+CREATE TABLE funcionario_controle (
+id int not null auto_increment,
+nome varchar(45) not null,
+cpf varchar(45) not null,
+entrada_saida date,
+primary key(id));
+
+CREATE TABLE transportadora(
+id int not null auto_increment,
+veiculo varchar(45) not null,
+data_entrega varchar(45) not null,
+data_recolhimento varchar(45) not null,
+trajeto varchar(45) not null,
+primary key(id));
+
+CREATE TABLE fornecedor_medicamentos_transportadora(
+id int not null auto_increment,
+fornecedor_id int not null,
+transportadora_id int not null,
+primary key(id));
+
+CREATE TABLE fornecedor_medicamento(
+id int not null auto_increment,
+endereco_id int not null,
+medicamento_id int not null,
+nome varchar(45) not null,
+medicamentos_ofertados varchar(45) not null,
+validade_remedios varchar(45) not null,
+primary key(id));
+
+CREATE TABLE medicamento(
+id int not null auto_increment,
+tipo_de_medicamento varchar(45) not null,
+tarjas_id int not null,
+primary key(id));
+
+CREATE TABLE tarjas(
+id int not null auto_increment,
+tarja_amarela varchar(45) not null,
+tarja_vermelha varchar(45) not null,
+tarja_preta varchar(45) not null,
+primary key (id));
+
+CREATE TABLE endereco_fornecedor(
+id int not null auto_increment,
+logradouro varchar(45) not null,
+cep int not null,
+primary key(id));
+
+ALTER TABLE `farmacia_1`.`loja` 
+ADD CONSTRAINT `fk_endereco_loja_id`
+  FOREIGN KEY (`id`)
+  REFERENCES `farmacia_1`.`endereco_loja` (`id`),
+
+ADD CONSTRAINT `fk_funcionario_loja_id`
+  FOREIGN KEY (`id`)
+  REFERENCES `farmacia_1`.`funcionario_loja` (`id`);
+
+ALTER TABLE `farmacia_1`.`cliente` 
+ADD CONSTRAINT `fk_loja_id`
+  FOREIGN KEY (`id`)
+  REFERENCES `farmacia_1`.`loja` (`id`),
+
+ADD CONSTRAINT `fk_endereco_cliente_id`
+  FOREIGN KEY (`id`)
+  REFERENCES `farmacia_1`.`endereco_cliente` (`id`);
+
+ALTER TABLE `farmacia_1`.`armazem` 
+ADD CONSTRAINT `fk_transportadora_id`
+  FOREIGN KEY (`transportadora_id`)
+  REFERENCES `farmacia_1`.`transportadora` (`id`),
+
+ADD CONSTRAINT `fk_loja_id1`
+  FOREIGN KEY (`loja_id`)
+  REFERENCES `farmacia_1`.`loja` (`id`),
+
+ADD CONSTRAINT `fk_controle_de_medicamento_id`
+  FOREIGN KEY (`controle_de_medicamento_id`)
+  REFERENCES `farmacia_1`.`controle_de_medicamento` (`id`);
+
+ALTER TABLE `farmacia_1`.`pedido_online` 
+ADD CONSTRAINT `fk_loja_id2`
+  FOREIGN KEY (`loja_id`)
+  REFERENCES `farmacia_1`.`loja` (`id`),
+
+ADD CONSTRAINT `fk_carrinho_id`
+  FOREIGN KEY (`carrinho_id`)
+  REFERENCES `farmacia_1`.`carrinho` (`id`),
+
+ADD CONSTRAINT `fk_forma_de_pagamento_id`
+  FOREIGN KEY (`forma_de_pagamento_id`)
+  REFERENCES `farmacia_1`.`forma_de_pagamento` (`id`);
+
+ALTER TABLE `farmacia_1`.`pedidos_presenciais` 
+ADD CONSTRAINT `fk_loja_id_pedido`
+  FOREIGN KEY (`loja_id`)
+  REFERENCES `farmacia_1`.`loja` (`id`),
+
+ADD CONSTRAINT `fk_forma_de_pagamento_id1`
+  FOREIGN KEY (`loja_id`)
+  REFERENCES `farmacia_1`.`forma_de_pagamento` (`id`);
+
+ALTER TABLE `farmacia_1`.`controle_de_medicamento` 
+ADD CONSTRAINT `fk_funcionario_controle_id`
+  FOREIGN KEY (`funcionario_controle_id`)
+  REFERENCES `farmacia_1`.`controle_de_medicamento` (`id`);
+
+ALTER TABLE `farmacia_1`.`fornecedor_medicamento` 
+ADD CONSTRAINT `fk_endereco_id`
+  FOREIGN KEY (`endereco_id`)
+  REFERENCES `farmacia_1`.`endereco_fornecedor` (`id`),
+
+ADD CONSTRAINT `fk_medicamento_id`
+  FOREIGN KEY (`medicamento_id`)
+  REFERENCES `farmacia_1`.`medicamento` (`id`);
+
+ALTER TABLE `farmacia_1`.`fornecedor_medicamentos_transportadora` 
+ADD CONSTRAINT `fk_fornecedor_id`
+  FOREIGN KEY (`fornecedor_id`)
+  REFERENCES `farmacia_1`.`fornecedor_medicamento` (`id`),
+
+ADD CONSTRAINT `fk_transportdora_id`
+  FOREIGN KEY (`transportadora_id`)
+  REFERENCES `farmacia_1`.`transportadora` (`id`);
+
+ALTER TABLE `farmacia_1`.`medicamento` 
+ADD CONSTRAINT `fk_tarjas_id`
+  FOREIGN KEY (`tarjas_id`)
+  REFERENCES `farmacia_1`.`tarjas` (`id`);
+  
+INSERT INTO funcionario_loja (id,nome,cpf,entrada_saida) VALUES (1,'Piqerez',000000000,'2011-08-11');
+INSERT INTO funcionario_loja (id,nome,cpf,entrada_saida) VALUES (2,'Rony',000000000,'2016-05-12');
+INSERT INTO funcionario_loja (id,nome,cpf,entrada_saida) VALUES (3,'Scarpa',000000000,'2015-09-09');
+INSERT INTO funcionario_loja (id,nome,cpf,entrada_saida) VALUES (4,'Veiga',000000000,'2008-11-10');
+INSERT INTO funcionario_loja (id,nome,cpf,entrada_saida) VALUES (5,'Weverton',000000000,'2011-03-08');
+
+INSERT INTO carrinho (id,produtos) VALUES (1,'Antiflamatorio');
+INSERT INTO carrinho (id,produtos) VALUES (2,'Antiflamatorio_Fitoterapico');
+INSERT INTO carrinho (id,produtos) VALUES (3,'Fitoterapico_Alopático');
+INSERT INTO carrinho (id,produtos) VALUES (4,'Fitoterapico_Manipulado');
+INSERT INTO carrinho (id,produtos) VALUES (5,'Alopático_Similar');
+
+INSERT INTO forma_de_pagamento (forma_de_pagamentocol,cartao_de_credito,forma_de_pagamentocol1) VALUES (1,'Debito','N_Cartao,Debito');
+INSERT INTO forma_de_pagamento (forma_de_pagamentocol,cartao_de_credito,forma_de_pagamentocol1) VALUES (2,'Credito','N_Cartao,Credito');
+INSERT INTO forma_de_pagamento (forma_de_pagamentocol,cartao_de_credito,forma_de_pagamentocol1) VALUES (3,'Boleto','N_Cartao,Boleto');
+INSERT INTO forma_de_pagamento (forma_de_pagamentocol,cartao_de_credito,forma_de_pagamentocol1) VALUES (4,'Dinheiro','N_Cartao,Dinheiro');
+INSERT INTO forma_de_pagamento (forma_de_pagamentocol,cartao_de_credito,forma_de_pagamentocol1) VALUES (5,'Pix','N_Cartao,Pix');
+
+INSERT INTO endereco_loja (id,CEP,logradouro) VALUES (1,97654712,'Rua_Ceara');
+INSERT INTO endereco_loja (id,CEP,logradouro) VALUES (2,32156497,'Rua_Avai');
+INSERT INTO endereco_loja (id,CEP,logradouro) VALUES (3,6495823,'Rua_Juventude');
+INSERT INTO endereco_loja (id,CEP,logradouro) VALUES (4,12649587,'Rua_Gama');
+INSERT INTO endereco_loja (id,CEP,logradouro) VALUES (5,13465297,'Rua_Verde');
+
+INSERT INTO endereco_cliente (id,logradouro,CEP) VALUES (1,'Rua_Santos',46853249);
+INSERT INTO endereco_cliente (id,logradouro,CEP) VALUES (2,'Rua_Goias',98562438);
+INSERT INTO endereco_cliente (id,logradouro,CEP) VALUES (3,'Rua_Bragantino',15496834);
+INSERT INTO endereco_cliente (id,logradouro,CEP) VALUES (4,'Rua_Coritiba',71549768);
+INSERT INTO endereco_cliente (id,logradouro,CEP) VALUES (5,'Rua_Cuiaba',13469785);
+
+INSERT INTO endereco_armazem (id,logradouro,CEP) VALUES (1,'Rua_Inter',78543691);
+INSERT INTO endereco_armazem (id,logradouro,CEP) VALUES (2,'Rua_Fluminense',14598762);
+INSERT INTO endereco_armazem (id,logradouro,CEP) VALUES (3,'Rua_Corinthians',48795284);
+INSERT INTO endereco_armazem (id,logradouro,CEP) VALUES (4,'Rua_Fortaleza',45986132);
+INSERT INTO endereco_armazem (id,logradouro,CEP) VALUES (5,'Rua_Botafogo',15497865);
+
+INSERT INTO funcionario_controle (id,nome,cpf,entrada_saida) VALUES (1,'Pedro','07688357128','2011-08-11');
+INSERT INTO funcionario_controle (id,nome,cpf,entrada_saida) VALUES (2,'Marcos','40048900125','2011-08-11');
+INSERT INTO funcionario_controle (id,nome,cpf,entrada_saida) VALUES (3,'Lucas','78988567564','2011-08-11');
+INSERT INTO funcionario_controle (id,nome,cpf,entrada_saida) VALUES (4,'João','45695178364','2011-08-11');
+INSERT INTO funcionario_controle (id,nome,cpf,entrada_saida) VALUES (5,'Guilherme','15975384625','2011-08-11');
+
+INSERT INTO endereco_fornecedor (id,logradouro,cep) VALUES (1,'Rua_Brasilia',84079564);
+INSERT INTO endereco_fornecedor (id,logradouro,cep) VALUES (2,'Rua_Palmeiras',9578415);
+INSERT INTO endereco_fornecedor (id,logradouro,cep) VALUES (3,'Rua_Vasco',65945387);
+INSERT INTO endereco_fornecedor (id,logradouro,cep) VALUES (4,'Rua_Atletico',84957685);
+INSERT INTO endereco_fornecedor (id,logradouro,cep) VALUES (5,'Rua_Cruzeiro',71690320);
+
+INSERT INTO tarjas (id,tarja_amarela,tarja_vermelha,tarja_preta) VALUES (1,'Usados','Diabetes','Desequilibrios hormonais');
+INSERT INTO tarjas (id,tarja_amarela,tarja_vermelha,tarja_preta) VALUES (2,'Usados','Diabetes','Desequilibrios hormonais');
+INSERT INTO tarjas (id,tarja_amarela,tarja_vermelha,tarja_preta) VALUES (3,'Usados','Diabetes','Desequilibrios hormonais');
+INSERT INTO tarjas (id,tarja_amarela,tarja_vermelha,tarja_preta) VALUES (4,'Usados','Diabetes','Desequilibrios hormonais');
+INSERT INTO tarjas (id,tarja_amarela,tarja_vermelha,tarja_preta) VALUES (5,'Usados','Diabetes','Desequilibrios hormonais');
+
+INSERT INTO transportadora (id,veiculo,data_entrega,data_recolhimento,trajeto) VALUES (1,'Caminhão','30_dias','25_dias','Coritiba_Destino');
+INSERT INTO transportadora (id,veiculo,data_entrega,data_recolhimento,trajeto) VALUES (2,'Van', '22_dias','17_dias','Bahia_Destino');
+INSERT INTO transportadora (id,veiculo,data_entrega,data_recolhimento,trajeto) VALUES (3,'Avião','2_dias','2_dias','Brasilia_Destino');
+INSERT INTO transportadora (id,veiculo,data_entrega,data_recolhimento,trajeto) VALUES (4,'Mercedez','15_dias','10_dias','Guarulhos_Destino');
+INSERT INTO transportadora (id,veiculo,data_entrega,data_recolhimento,trajeto) VALUES (5,'BMW','12_dias','8_dias','Floripa_Destino');
+
+INSERT INTO loja (id,preco_do_produto,cadastro_cliente,endereco_loja_id,funcionario_loja_id) VALUES (1,35,1,1,1);
+INSERT INTO loja (id,preco_do_produto,cadastro_cliente,endereco_loja_id,funcionario_loja_id) VALUES (2,48,2,2,2);
+INSERT INTO loja (id,preco_do_produto,cadastro_cliente,endereco_loja_id,funcionario_loja_id) VALUES (3,95,3,3,3);
+INSERT INTO loja (id,preco_do_produto,cadastro_cliente,endereco_loja_id,funcionario_loja_id) VALUES (4,12,4,4,4);
+INSERT INTO loja (id,preco_do_produto,cadastro_cliente,endereco_loja_id,funcionario_loja_id) VALUES (5,46,5,5,5);
+
+
+INSERT INTO cliente (id,loja_id,endereco_cliente_id,nome,cpf) VALUES (1,1,1,'Luiza',000000000);
+INSERT INTO cliente (id,loja_id,endereco_cliente_id,nome,cpf) VALUES (2,2,2,'Carla',000000000);
+INSERT INTO cliente (id,loja_id,endereco_cliente_id,nome,cpf) VALUES (3,3,3,'Maria',000000000);
+INSERT INTO cliente (id,loja_id,endereco_cliente_id,nome,cpf) VALUES (4,4,4,'Danielle',000000000);
+INSERT INTO cliente (id,loja_id,endereco_cliente_id,nome,cpf) VALUES (5,5,5,'Lara',000000000);
+
+INSERT INTO pedido_online (id,loja_id,carrinho_id,forma_de_pagamento_id,pedidos,endereco_entrega,medicamento) VALUES (1,1,1,1,6,'Rua_Criciuma','Antiflamatorio');
+INSERT INTO pedido_online (id,loja_id,carrinho_id,forma_de_pagamento_id,pedidos,endereco_entrega,medicamento) VALUES (2,2,2,2,7,'Rua_Guarani','Antiflamatorio_Fitoterapico');
+INSERT INTO pedido_online (id,loja_id,carrinho_id,forma_de_pagamento_id,pedidos,endereco_entrega,medicamento) VALUES (3,3,3,3,8,'Rua_CRB','Fitoterapico_Alopático');
+INSERT INTO pedido_online (id,loja_id,carrinho_id,forma_de_pagamento_id,pedidos,endereco_entrega,medicamento) VALUES (4,4,4,4,9,'Rua_Ponte','Fitoterapico_Manipulado');
+INSERT INTO pedido_online (id,loja_id,carrinho_id,forma_de_pagamento_id,pedidos,endereco_entrega,medicamento) VALUES (5,5,5,5,15,'Rua_Tombense','Fitoterapico_Manipulado');
+
+INSERT INTO controle_de_medicamento (id,validade,separaco_estoque,funcionario_controle_id) VALUES (1,2027,'Armario_2',1);
+INSERT INTO controle_de_medicamento (id,validade,separaco_estoque,funcionario_controle_id) VALUES (2,2024,'Armario_1',2);
+INSERT INTO controle_de_medicamento (id,validade,separaco_estoque,funcionario_controle_id) VALUES (3,2050,'Armario_3',3);
+INSERT INTO controle_de_medicamento (id,validade,separaco_estoque,funcionario_controle_id) VALUES (4,2025,'Armario_4',4);
+INSERT INTO controle_de_medicamento (id,validade,separaco_estoque,funcionario_controle_id) VALUES (5,2030,'Armario_5',5);
+
+INSERT INTO medicamento (id,tipo_de_medicamento,tarjas_id) VALUES (1,'Antiflamatorio',1);
+INSERT INTO medicamento (id,tipo_de_medicamento,tarjas_id) VALUES (2,'Fitoterapico',2);
+INSERT INTO medicamento (id,tipo_de_medicamento,tarjas_id) VALUES (3,'Alopático',3);
+INSERT INTO medicamento (id,tipo_de_medicamento,tarjas_id) VALUES (4,'Manipulado',4);
+INSERT INTO medicamento (id,tipo_de_medicamento,tarjas_id) VALUES (5,'Similar',5);
+
+INSERT INTO armazem (id,transportadora_id,loja_id,endereco_armazem_id,tamanho_armazem,espaco_vazio,espaco_ocupado,controle_de_medicamento_id) VALUES (1,1,1,1,1.000,50,50,2);
+INSERT INTO armazem (id,transportadora_id,loja_id,endereco_armazem_id,tamanho_armazem,espaco_vazio,espaco_ocupado,controle_de_medicamento_id) VALUES (2,2,2,2,12.000,45,65,2);
+INSERT INTO armazem (id,transportadora_id,loja_id,endereco_armazem_id,tamanho_armazem,espaco_vazio,espaco_ocupado,controle_de_medicamento_id) VALUES (3,3,3,3,15.000,55,45,2);
+INSERT INTO armazem (id,transportadora_id,loja_id,endereco_armazem_id,tamanho_armazem,espaco_vazio,espaco_ocupado,controle_de_medicamento_id) VALUES (4,4,4,4,16.000,10,90,2);
+INSERT INTO armazem (id,transportadora_id,loja_id,endereco_armazem_id,tamanho_armazem,espaco_vazio,espaco_ocupado,controle_de_medicamento_id) VALUES (5,5,5,5,4.000,20,80,2);
+
+INSERT INTO fornecedor_medicamento (id,endereco_id,medicamento_id,nome,medicamentos_ofertados,validade_remedios) VALUES (1,1,1,'American','Advil',2027);
+INSERT INTO fornecedor_medicamento (id,endereco_id,medicamento_id,nome,medicamentos_ofertados,validade_remedios) VALUES (2,2,2,'IMIFARMA','Alcachofra',2024);
+INSERT INTO fornecedor_medicamento (id,endereco_id,medicamento_id,nome,medicamentos_ofertados,validade_remedios) VALUES (3,3,3,'Rondomed','paracetamol',2050);
+INSERT INTO fornecedor_medicamento (id,endereco_id,medicamento_id,nome,medicamentos_ofertados,validade_remedios) VALUES (4,4,4,'MULTFAR','Orlistate',2025);
+INSERT INTO fornecedor_medicamento (id,endereco_id,medicamento_id,nome,medicamentos_ofertados,validade_remedios) VALUES (5,5,5,'GOLFARMA','Amoxilina',2030);
+
+INSERT INTO fornecedor_medicamentos_transportadora (id,fornecedor_id,transportadora_id) VALUES (1,1,1);
+INSERT INTO fornecedor_medicamentos_transportadora (id,fornecedor_id,transportadora_id) VALUES (2,2,2);
+INSERT INTO fornecedor_medicamentos_transportadora (id,fornecedor_id,transportadora_id) VALUES (3,3,3);
+INSERT INTO fornecedor_medicamentos_transportadora (id,fornecedor_id,transportadora_id) VALUES (4,4,4);
+INSERT INTO fornecedor_medicamentos_transportadora (id,fornecedor_id,transportadora_id) VALUES (5,5,5);
+
+
+INSERT INTO pedidos_presenciais (loja_id,forma_de_pagamento_id,medicamentos,endereco_de_entrega) VALUES (1,1,'Antiflamatorio','Rua_Gremio');
+INSERT INTO pedidos_presenciais (loja_id,forma_de_pagamento_id,medicamentos,endereco_de_entrega) VALUES (2,2,'Fitoterapico','Rua_Scorreia');
+INSERT INTO pedidos_presenciais (loja_id,forma_de_pagamento_id,medicamentos,endereco_de_entrega) VALUES (3,3,'Alopático','Rua_Ituano');
+INSERT INTO pedidos_presenciais (loja_id,forma_de_pagamento_id,medicamentos,endereco_de_entrega) VALUES (4,4,'Manipulado','Rua_Sport');
+INSERT INTO pedidos_presenciais (loja_id,forma_de_pagamento_id,medicamentos,endereco_de_entrega) VALUES (5,5,'Similar','Rua_Londrina');
+
+
+
+SELECT * FROM funcionario_loja AS FJ
+INNER JOIN loja AS PH
+ON (FJ.id = PH.funcionario_loja_id);
+
+SELECT * FROM endereco_armazem AS EA
+INNER JOIN armazem AS AR
+ON (EA.id = AR.endereco_armazem_id);
+
+SELECT * FROM endereco_cliente AS EC
+INNER JOIN cliente AS CL
+ON (EC.id = CL.endereco_cliente_id);
+
+CREATE VIEW vw_armazem AS
+SELECT id,
+       tamanho_armazem,
+       controle_de_medicamento_id,
+       espaco_vazio,
+       espaco_ocupado,
+       endereco_armazem_id FROM armazem;
+
+CREATE VIEW vw_lojas AS
+SELECT cadastro_cliente,
+       id,
+       funcionario_loja_id,
+       endereco_loja_id FROM loja;
+
+DELIMITER $$
+
+CREATE FUNCTION funcionario_loja(entrada_saida date)
+RETURNS DATE
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+RETURN (SELECT entrada_saida
+        FROM  funcionario_loja
+        WHERE entrada_saida = dt);
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE FUNCTION funcionario_controle(entrada_saida date)
+RETURNS DATE
+DETERMINISTIC 
+READS SQL DATA 
+BEGIN 
+RETURN (SELECT entrada_saida
+        FROM  funcionario_controle
+        WHERE entrada_saida = dt);
+
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE selecionar_todos_clientes()
+BEGIN
+	
+    SELECT * FROM cliente;
+    
+END $$
+
+DELIMITER ;
+  
+
+
+DELIMITER $$
+
+CREATE PROCEDURE verificar_estoque()
+BEGIN
+
+	SELECT id_produto, nome, quantidade
+    FROM produto;
+	
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+USE `farmacia_1`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `farmacia_1`.`produto_AFTER_INSERT` AFTER INSERT ON `medicamento` FOR EACH ROW
+BEGIN
+
+UPDATE controle_medicamento
+SET separacao_estoque = separacao_estoque - 1;
+
+END $$
+DELIMITER ;
+
+
+DELIMITER $$
+USE `farmacia_1`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `farmacia_1`.`armazem_AFTER_INSERT` AFTER INSERT ON `armazem` FOR EACH ROW
+BEGIN
+
+	UPDATE armazem
+	SET espaco_vazio = 'vazio';
+
+END$$
+DELIMITER ;
