@@ -1,0 +1,71 @@
+vinicius carvalho silva
+uc21100874
+
+CREATE SCHEMA secretaria_academica;
+
+CREATE TABLE tabela_estudantes(
+id_aluno bigint auto_increment not null primary key,
+nome_e varchar(50),
+data_nascimento date,
+turma smallint(3),
+nota decimal(3,1)
+);
+CREATE TABLE tabela_disciplina(
+id bigint auto_increment not null primary key,  
+nome_d varchar (40),
+resumo_d varchar(100),
+carga_h timestamp(200),
+dia_da_semana date
+);
+CREATE TABLE tabela_professor(
+id bigint key not null primary key, 
+nome_p varchar (40),
+data_nascimento date, 
+carga_p timestamp(100),
+titulacao_p varchar(20)
+);
+CREATE TABLE tabela_turma (
+id bigint key not null primary key, 
+sala varchar(3),
+professor_id int, 
+turno time,
+dia_da_semana date
+); 
+CREATE TABLE tabela_matricula(
+aluno_id int,
+turma_id int,
+nota_1 decimal,
+nota_2 decimal, 
+nota_3 decimal 
+);
+SELECT * FROM tabela_estudante; 
+insert into estudante values(1, 'João');
+insert into estudante values(2, 'Roberta');
+insert into estudante values(3, 'Marcos');
+insert into estudante values(4, 'Fátima');
+insert into estudante values(5, 'Daniel');
+
+SELECT * FROM tabela_professor; 
+insert into professor values(1, 'Eric');
+insert into professor values(2, 'josé');
+insert into professor values(3, 'Joaquim'); 
+insert into professor values(4, 'Beatriz');
+insert into professor values(5, 'Carlos');
+
+ select t.aluno_id, t.tabela_estudantes from (
+
+          SELECT estudante as id_aluno, 'João' as  tabela_estudante FROM aluno
+    union SELECT estudante as id_aluno, 'Roberta'   as  tabela_estudante FROM aluno
+    union SELECT estudante as id_aluno, 'Marcos' as  tabela_estudante FROM aluno
+    union SELECT estudante as id_aluno, 'Fátima'   as  tabela_estudante FROM aluno
+    union SELECT estudante as id_aluno, 'Daniel' as  tabela_estudante FROM aluno
+) t
+where upper(nome_e) LIKE "jo&";    
+
+CREATE VIEW V_RELATORIO AS
+SELECT M_PROFESSOR,
+	   M_ALUNOS,
+	   M_DISCIPLINA,
+	   M_SALAM05,
+	   M_MAUTINO,
+	   M_SEGUNDA;
