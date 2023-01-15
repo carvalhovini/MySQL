@@ -1,0 +1,64 @@
+0 - Em apenas um parágrafo defina o conceito de JOIN utilizado no MySQL
+
+	Uma cláusula JOIN em SQL, correspondente a uma operação de junção em álgebra relacional, combina colunas de uma ou mais tabelas em um banco de dados relacional. Ela cria um conjunto que pode ser salvo como uma tabela ou usado da forma como está.
+
+
+
+CREATE DATABASE Fabricante; use Fabricante;
+CREATE TABLE marca (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(45) NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE modelo (
+  id INT NOT NULL AUTO_INCREMENT,
+  marca_id INT NOT NULL,
+  modelo VARCHAR(45) NULL,
+  PRIMARY KEY (id));
+  
+CREATE TABLE veiculo (
+  id INT NOT NULL AUTO_INCREMENT,
+  modelo_id INT NOT NULL,
+  preco DECIMAL(9,2) NULL,
+  liquido DECIMAL(9,2) NULL,
+  PRIMARY KEY (id));  
+  
+ALTER TABLE modelo ADD CONSTRAINT fk_modelo_marca FOREIGN KEY (marca_id) REFERENCES marca(id);    
+ALTER TABLE veiculo ADD CONSTRAINT fk_veiculo_modelo FOREIGN KEY (modelo_id) REFERENCES modelo (id);
+
+INSERT INTO marca (nome) VALUES ('BMW');
+INSERT INTO marca (nome) VALUES ('VW');
+INSERT INTO marca (nome) VALUES ('FIAT');
+INSERT INTO marca (nome) VALUES ('HONDA');
+
+INSERT INTO modelo (marca_id, modelo) VALUES (1, '328i');
+INSERT INTO modelo (marca_id, modelo) VALUES (3, 'Mobi');
+INSERT INTO modelo (marca_id, modelo) VALUES (2, 'Passat');
+INSERT INTO modelo (marca_id, modelo) VALUES (4, 'City');
+INSERT INTO modelo (marca_id, modelo) VALUES (4, 'Civic');
+INSERT INTO modelo (marca_id, modelo) VALUES (4, 'Accord');
+
+INSERT INTO `veiculo` (`modelo_id`, `preco`) VALUES ('1', '100000');
+INSERT INTO `veiculo` (`modelo_id`, `preco`) VALUES ('1', '20000');
+INSERT INTO `veiculo` (`modelo_id`, `preco`) VALUES ('2', '30000');
+INSERT INTO `veiculo` (`modelo_id`, `preco`) VALUES ('2', '40000');
+INSERT INTO `veiculo` (`modelo_id`, `preco`) VALUES ('3', '50000');
+
+SELECT * FROM marca  INNER JOIN modelo ON marca.id= marca.id;
+SELECT * FROM marca LEFT OUTER JOIN veiculo ON marca.id = veiculo.id;
+SELECT * FROM modelo RIGHT OUTER JOIN veiculo ON modelo.id = veiculo.id;
+SELECT *FROM modelo LEFT OUTER JOIN veiculo ON modelo.id = veiculo.id WHERE veiculo.id is null;
+
+SELECT *
+FROM marca
+RIGHT OUTER JOIN veiculo
+ON marca.id = veiculo.id
+WHERE marca.id is null;  
+
+SELECT *
+FROM marca
+INNER JOIN veiculo
+ON marca.id = veiculo.id
+INNER JOIN modelo
+ON marca.id = modelo.id;
