@@ -1,0 +1,82 @@
+CREATE DATABASE farmacia;
+
+USE farmacia;
+
+CREATE TABLE medicamentos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255),
+  dosagem VARCHAR(255),
+  quantidade INT,
+  preco FLOAT(2),
+  fabricante VARCHAR(255),
+  validade DATE
+);
+
+CREATE TABLE clientes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255),
+  endereco VARCHAR(255),
+  telefone VARCHAR(255),
+  data_nascimento DATE,
+  convenio VARCHAR(255)
+);
+
+CREATE TABLE vendas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_medicamento INT,
+  id_cliente INT,
+  data DATE,
+  quantidade INT,
+  FOREIGN KEY (id_medicamento) REFERENCES medicamentos(id),
+  FOREIGN KEY (id_cliente) REFERENCES clientes(id)
+);
+
+CREATE TABLE receituario (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_medicamento INT,
+  id_cliente INT,
+  data DATE,
+  prescricao TEXT,
+  FOREIGN KEY (id_medicamento) REFERENCES medicamentos(id),
+  FOREIGN KEY (id_cliente) REFERENCES clientes(id)
+);
+
+CREATE TABLE fornecedores (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255),
+  endereco VARCHAR(255),
+  telefone VARCHAR(255),
+  cnpj VARCHAR(255)
+);
+
+CREATE TABLE estoque (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_medicamento INT,
+  id_fornecedor INT,
+  quantidade INT,
+  data_entrada DATE,
+  FOREIGN KEY (id_medicamento) REFERENCES medicamentos(id),
+  FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id)
+);
+
+CREATE TABLE funcionarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255),
+  endereco VARCHAR(255),
+  telefone VARCHAR(255),
+  cargo VARCHAR(255),
+  salario FLOAT(2),
+  data_admissao DATE
+);
+
+CREATE TABLE caixa (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_venda INT,
+  id_funcionario INT,
+  data DATE,
+  valor FLOAT(2),
+  FOREIGN KEY (id_venda) REFERENCES vendas(id),
+  FOREIGN KEY (id_funcionario) REFERENCES funcionarios(id)
+);
+
+INSERT INTO medicamentos (nome, dosagem, quant
