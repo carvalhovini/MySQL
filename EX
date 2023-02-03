@@ -1,3 +1,6 @@
+##e ex de sala
+
+
 CREATE DATABASE farmacia;
 
 USE farmacia;
