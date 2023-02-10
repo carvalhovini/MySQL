@@ -1,4 +1,4 @@
-##e ex de sala.
+##e ex de sala
 
 
 CREATE DATABASE farmacia;
