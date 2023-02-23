@@ -1,4 +1,4 @@
-0 - Em apenas um parágrafo defina o conceito de JOIN utilizado no MySQL
+0 - Em apenas um parágrafo defina o conceito de JOIN utilizado no MySQL.
 
 	Uma cláusula JOIN em SQL, correspondente a uma operação de junção em álgebra relacional, combina colunas de uma ou mais tabelas em um banco de dados relacional. Ela cria um conjunto que pode ser salvo como uma tabela ou usado da forma como está.
 
