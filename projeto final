@@ -1,4 +1,4 @@
-CREATE SCHEMA farmacia_1
+CREATE SCHEMA farmacia_1;
 
 use farmacia_1;
 
